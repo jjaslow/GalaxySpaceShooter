@@ -15,6 +15,7 @@ public class PowerUp : MonoBehaviour
     //3 auto fire
 
 
+
     // Update is called once per frame
     void Update()
     {
@@ -31,8 +32,9 @@ public class PowerUp : MonoBehaviour
     {
         if(collision.gameObject.tag=="Player")
         {
+            collision.gameObject.GetComponent<Player>().PlayPowerUpClip();
 
-            switch(powerupID)
+            switch (powerupID)
             {
                 case 0:
                     collision.gameObject.GetComponent<Player>().TripleShotPowerUp();

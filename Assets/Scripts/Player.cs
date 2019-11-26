@@ -30,6 +30,10 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
 
     private AudioSource _audioSource;
+    [SerializeField]
+    private AudioClip _explosionClip;
+    [SerializeField]
+    private AudioClip _powerUpClip;
 
     [SerializeField]
     private GameObject _fireLeft;
@@ -111,6 +115,8 @@ public class Player : MonoBehaviour
 
             _uiManager.UpdateLivesImage(_lives);
 
+            _audioSource.clip = _explosionClip;
+            _audioSource.volume = 0.096f;
             _audioSource.Play();
             //transform.position = Vector3.zero;
 
@@ -149,6 +155,13 @@ public class Player : MonoBehaviour
             GameObject.FindGameObjectWithTag("gameManager").GetComponent<GameManager>().GameOver();
         }
             
+    }
+
+    public void PlayPowerUpClip()
+    {
+        _audioSource.clip = _powerUpClip;
+        _audioSource.volume = 1f;
+        _audioSource.Play();
     }
 
     public void TripleShotPowerUp()
