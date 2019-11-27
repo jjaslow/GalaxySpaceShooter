@@ -10,7 +10,10 @@ public class Laser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.up * speed * Time.deltaTime);
+        if(gameObject.tag=="laser")
+            transform.Translate(Vector3.up * speed * Time.deltaTime);
+        else if(gameObject.tag == "laserEnemy")
+            transform.Translate(Vector3.down * speed * Time.deltaTime);
 
         if (transform.parent != null)
             Destroy(gameObject.transform.parent.gameObject, 2.5f);

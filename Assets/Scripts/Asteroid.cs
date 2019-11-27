@@ -6,13 +6,13 @@ public class Asteroid : MonoBehaviour
 {
     [SerializeField]
     private GameObject _ExplosionPrefab;
-    [SerializeField]
     private SpawnManager _SpawnManager;
 
     private AudioSource _audioSource;
 
     private void Start()
     {
+        _SpawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _SpawnManager.enabled =false;
         _audioSource = GetComponent<AudioSource>();
     }

@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private GameObject _ExplodingEnemyPrefab;
+    [SerializeField]
+    private GameObject laserPrefab;
 
     private AudioSource _audioSource;
 
@@ -16,7 +18,11 @@ public class Enemy : MonoBehaviour
     {
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
+        if(Random.Range(0,10)==0) //1 of 10 will shoot
+            StartCoroutine(Shoot());
     }
+
+
     // Update is called once per frame
     void Update()
     {
@@ -30,6 +36,26 @@ public class Enemy : MonoBehaviour
             
         
     }
+
+
+
+    IEnumerator Shoot()
+    {
+        while(true)
+        {
+            Instantiate(laserPrefab, transform.position + (.95f * Vector3.down), Quaternion.identity);
+            yield return new WaitForSeconds(Random.Range(1, 2));
+        }
+        
+    
+
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
 
 
     private void OnTriggerEnter2D(Collider2D other)
