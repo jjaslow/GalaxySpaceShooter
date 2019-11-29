@@ -13,13 +13,19 @@ public class Enemy : MonoBehaviour
     private GameObject laserPrefab;
 
     private AudioSource _audioSource;
+    bool _isAlive;
+    Coroutine _coRoutine;
 
     private void Start()
     {
+        _isAlive = true;
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
         if(Random.Range(0,10)==0) //1 of 10 will shoot
-            StartCoroutine(Shoot());
+        {
+            _coRoutine = StartCoroutine(Shoot());
+        }
+            
     }
 
 
@@ -41,7 +47,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Shoot()
     {
-        while(true)
+        while(true && _isAlive)
         {
             Instantiate(laserPrefab, transform.position + (.95f * Vector3.down), Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(1, 2));
@@ -51,11 +57,6 @@ public class Enemy : MonoBehaviour
 
     }
 
-    private void OnDestroy()
-    {
-        StopAllCoroutines();
-    }
-
 
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -63,6 +64,9 @@ public class Enemy : MonoBehaviour
 
         if (other.gameObject.tag == "laser")
         {
+            _isAlive = false;
+            if(_coRoutine != null)
+                StopCoroutine(_coRoutine);
             _audioSource.Play();
             Destroy(other.gameObject);
             GameObject explosion = Instantiate(_ExplodingEnemyPrefab, transform.position, Quaternion.identity);
@@ -72,6 +76,9 @@ public class Enemy : MonoBehaviour
         }
         else if (other.gameObject.tag == "Player")
         {
+            _isAlive = false;
+            if (_coRoutine != null)
+                StopCoroutine(_coRoutine);
             other.GetComponent<Player>().Damage();
             GameObject explosion = Instantiate(_ExplodingEnemyPrefab, transform.position, Quaternion.identity);
             Destroy(explosion, 2.5f);
