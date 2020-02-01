@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
 
         if(!_thrustActive && _thrustPower<10)
         {
-            _thrustPower += .05f;
+            _thrustPower += .01f;
             _uiManager.ThrustBar(_thrustPower);
 
             if (_thrustPower >= 5)
@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
         }
         else if (_thrustActive)
         {
-            _thrustPower -= .05f;
+            _thrustPower -= .01f;
             _uiManager.ThrustBar(_thrustPower);
         }
 
@@ -155,10 +155,10 @@ public class Player : MonoBehaviour
         {
             Instantiate(tripleShotPrefab, transform.position, Quaternion.identity);
         }
-        if (!_autoFireOn && !_autoFireOn)
+        if (!_autoFireOn)
             _ammoCount--;
 
-        if(_ammoCount==0)
+        if(_ammoCount==0 && !_autoFireOn)
             _uiManager.AmmoText(true);
 
         nextFire = Time.time + fireRate;
