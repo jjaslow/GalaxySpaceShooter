@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    [Range(1, 10)]
     public int speed;
     [SerializeField]
     private readonly float fireRate = 0.15f;
@@ -18,12 +17,22 @@ public class Player : MonoBehaviour
 
     private bool _tripleShotEnabled = false;
     private bool _shieldsUp = false;
+    [SerializeField]
+    private int _shieldStrength = 0;
     private bool _autoFireOn = false;
 
     [SerializeField]
     private int _lives = 3;
     [SerializeField]
     private int _score=0;
+    [SerializeField]
+    private int _ammoCount;
+    [SerializeField]
+    private float _thrustPower = 5;
+    [SerializeField]
+    private bool _thrustActive = false;
+    [SerializeField]
+    private bool _canStartThrust = true;
 
     [SerializeField]
     private GameObject Canvas;
@@ -42,6 +51,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _fireMiddle;
 
+    private Camera mainCamera;
+    private bool _shakeCamera = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +64,9 @@ public class Player : MonoBehaviour
         _fireRight.SetActive(false);
         _fireMiddle.SetActive(false);
         shieldsImage.SetActive(false);
+        _ammoCount = 16;   //16
+        mainCamera = Camera.main;
+        _uiManager.ThrustBar(_thrustPower);
     }
 
     // Update is called once per frame
@@ -60,8 +75,30 @@ public class Player : MonoBehaviour
         MovePlayer();
         Wrap();
 
-        if ((Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire) || (_autoFireOn && _lives>=0))
+        if ((Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire && _ammoCount>0 && _lives >= 0) || (_autoFireOn && _lives>=0))
             Shoot();     
+
+        if(_shakeCamera && _lives >= 0)
+        {
+            float x = Random.Range(-.25f, .25f);
+            float y = Random.Range(-.25f, .25f);
+            mainCamera.transform.localEulerAngles = new Vector3(x, y, 0);
+        }
+
+        if(!_thrustActive && _thrustPower<10)
+        {
+            _thrustPower += .05f;
+            _uiManager.ThrustBar(_thrustPower);
+
+            if (_thrustPower >= 5)
+                _canStartThrust = true;
+        }
+        else if (_thrustActive)
+        {
+            _thrustPower -= .05f;
+            _uiManager.ThrustBar(_thrustPower);
+        }
+
             
     }
 
@@ -69,6 +106,22 @@ public class Player : MonoBehaviour
     {
         //transform.Translate(Vector3.right * Input.GetAxis("Horizontal") * speed * Time.deltaTime);
         //transform.Translate(Vector3.up * Input.GetAxis("Vertical") * speed * Time.deltaTime);
+
+        if(Input.GetKeyDown(KeyCode.LeftShift) &&  _thrustPower>5 && _canStartThrust)
+        {
+            speed *= 2;
+            _thrustActive = true;
+            _canStartThrust = false;
+        }
+            
+        if ((Input.GetKeyUp(KeyCode.LeftShift) && _thrustActive) || (_thrustPower<.25f && _thrustActive))
+        {
+            speed /= 2;
+            _thrustActive = false;
+            if(_thrustPower<5)
+                _canStartThrust = false;
+        }
+            
 
         transform.Translate(new Vector3
             (Input.GetAxis("Horizontal"),
@@ -102,6 +155,11 @@ public class Player : MonoBehaviour
         {
             Instantiate(tripleShotPrefab, transform.position, Quaternion.identity);
         }
+        if (!_autoFireOn && !_autoFireOn)
+            _ammoCount--;
+
+        if(_ammoCount==0)
+            _uiManager.AmmoText(true);
 
         nextFire = Time.time + fireRate;
 
@@ -109,9 +167,11 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if(!_shieldsUp)
+        if(_shieldStrength == 0)   //(!_shieldsUp)
         {
+
             _lives--;
+            StartCoroutine(ShakeCamera());
 
             _uiManager.UpdateLivesImage(_lives);
 
@@ -129,10 +189,19 @@ public class Player : MonoBehaviour
             //    Destroy(pu);
             FireDamage();
         }
+        else if (_shieldStrength>1)
+        {
+            _shieldStrength--;
+
+            float shieldOpacity = shieldsImage.GetComponent<SpriteRenderer>().color.a;
+            shieldOpacity -= .33f;
+            shieldsImage.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, shieldOpacity);
+        }
         else
         {
             shieldsImage.SetActive(false);
             _shieldsUp = false;
+            _shieldStrength--;
         }
 
         if (_lives < 0)
@@ -198,6 +267,13 @@ public class Player : MonoBehaviour
         StartCoroutine(AutoFirePowerDown());
     }
 
+    public void ReloadPowerUp()
+    {
+        _ammoCount = 15;
+        _uiManager.AmmoText(false);
+
+    }
+
     IEnumerator AutoFireToggle()
     {
         float counter = Time.time + 5f;
@@ -222,10 +298,22 @@ public class Player : MonoBehaviour
 
     public void ShieldPowerUp()
     {
-        if(!_shieldsUp)
+        //if(!_shieldsUp)
         {
             _shieldsUp = true;
             shieldsImage.SetActive(true);
+            _shieldStrength = 3;
+            shieldsImage.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
+        
+    }
+
+    public void AddLifePowerUp()
+    {
+        if(_lives<3)
+        {
+            _uiManager.UpdateLivesImage(++_lives);
+            FireDamage();
         }
         
     }
@@ -236,18 +324,37 @@ public class Player : MonoBehaviour
         _uiManager.UpdateScore(_score);
     }
 
+    IEnumerator ShakeCamera()
+    {
+        _shakeCamera = true;
+        yield return new WaitForSeconds(0.75f);
+        _shakeCamera = false;
+        mainCamera.transform.localEulerAngles = new Vector3(0, 0, 0);
+    }
+
     private void FireDamage()
     {
 
         switch (_lives)
         {
+            case 3:
+                _fireLeft.SetActive(false);
+                _fireRight.SetActive(false);
+                _fireMiddle.SetActive(false);
+                break;
             case 2:
                 _fireLeft.SetActive(true);
+                _fireRight.SetActive(false);
+                _fireMiddle.SetActive(false);
                 break;
             case 1:
+                _fireLeft.SetActive(true);
                 _fireRight.SetActive(true);
+                _fireMiddle.SetActive(false);
                 break;
             case 0:
+                _fireLeft.SetActive(true);
+                _fireRight.SetActive(true);
                 _fireMiddle.SetActive(true);
                 break;
 

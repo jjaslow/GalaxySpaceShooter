@@ -45,7 +45,7 @@ public class SpawnManager : MonoBehaviour
             Vector3 PowerUpPosition = new Vector3(Random.Range(-9f, 9f), 7.25f, 0);
 
             Instantiate(PowerUpPrefabs[Random.Range(0,PowerUpPrefabs.Length)], PowerUpPosition, Quaternion.identity);
-        
+
 
         }
         

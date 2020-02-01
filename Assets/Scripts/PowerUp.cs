@@ -48,6 +48,12 @@ public class PowerUp : MonoBehaviour
                 case 3:
                     collision.gameObject.GetComponent<Player>().AutoFirePowerUp();
                     break;
+                case 4:
+                    collision.gameObject.GetComponent<Player>().ReloadPowerUp();
+                    break;
+                case 5:
+                    collision.gameObject.GetComponent<Player>().AddLifePowerUp();
+                    break;
             }
 
             Destroy(gameObject);

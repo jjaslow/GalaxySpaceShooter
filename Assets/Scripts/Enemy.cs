@@ -36,8 +36,10 @@ public class Enemy : MonoBehaviour
 
         if (transform.position.y < -5.5)
         {
-            float xPos = Random.Range(-9f, 9f);
-            transform.position = new Vector3(xPos, 7.25f, transform.position.z);
+            //commented code returns enemy to top instead of destroying.
+            //float xPos = Random.Range(-9f, 9f);
+            //transform.position = new Vector3(xPos, 7.25f, transform.position.z);
+            Destroy(gameObject);
         }
             
         
