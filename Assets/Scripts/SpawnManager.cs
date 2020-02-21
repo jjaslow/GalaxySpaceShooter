@@ -7,6 +7,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject EnemyPrefab;
     [SerializeField]
+    private GameObject HomingEnemyPrefab;
+    [SerializeField]
     private Transform EnemySpawnParent;
 
     [SerializeField]
@@ -16,11 +18,14 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     float _waveSystemFactor = 0;
 
+    public bool HomingEnemyExists = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnHomingEnemies());
         StartCoroutine(SpawnPowerUps());
         StartCoroutine(SpawnReloadAmmo());
     }
@@ -61,7 +66,7 @@ public class SpawnManager : MonoBehaviour
             e.Init(_enemyCanShoot);
 
             _waveSystemFactor += Time.deltaTime;
-            yield return new WaitForSeconds(Random.Range(.5f, 1.5f)/_waveSystemFactor);
+            yield return new WaitForSeconds(Random.Range(1.5f, 2.5f)/_waveSystemFactor);
         }
     }
 
@@ -96,6 +101,33 @@ public class SpawnManager : MonoBehaviour
 
         }
 
+    }
+
+    IEnumerator SpawnHomingEnemies()
+    {
+       
+        yield return new WaitForSeconds(25f);
+        
+        while (true)
+        {
+            if(!HomingEnemyExists)
+            {
+                HomingEnemyExists = true;
+
+                int xPos;
+                if (Random.value < 0.5f)
+                    xPos  = -11;
+                else
+                    xPos = 11;
+
+                Vector3 Position = new Vector3(xPos, Random.Range(-4, 6), 0);
+                Instantiate(HomingEnemyPrefab, Position, Quaternion.identity);
+            }
+            
+            yield return new WaitForSeconds(Random.Range(25, 35));
+
+
+        }
     }
 
 

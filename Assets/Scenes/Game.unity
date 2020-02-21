@@ -1078,7 +1078,7 @@ GameObject:
   - component: {fileID: 1075642207}
   m_Layer: 0
   m_Name: Spawn_Manager
-  m_TagString: Untagged
+  m_TagString: SpawnManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1097,6 +1097,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 281477753463825649, guid: b326b3059175da64c92334db1e5b5022,
     type: 3}
+  HomingEnemyPrefab: {fileID: 4265889100503962249, guid: 4ac9f901377e0824b9b017e6da8b6a1d,
+    type: 3}
   EnemySpawnParent: {fileID: 1271152327}
   PowerUpPrefabs:
   - {fileID: 2461969220403798235, guid: 48120046bcef6b14fb2cc31be56ed3c5, type: 3}
@@ -1108,6 +1110,7 @@ MonoBehaviour:
   ReloadAmmoPrefab: {fileID: 3367386643546755610, guid: 814637120c59f004ca7ea08b4127e59e,
     type: 3}
   _waveSystemFactor: 0
+  HomingEnemyExists: 0
 --- !u!4 &1075642208
 Transform:
   m_ObjectHideFlags: 0
@@ -1562,7 +1565,7 @@ MonoBehaviour:
   _shieldStrength: 0
   _lives: 3
   _score: 0
-  _ammoCount: 16
+  _ammoCount: 26
   _thrustPower: 5
   _thrustActive: 0
   _canStartThrust: 1
@@ -1866,7 +1869,7 @@ GameObject:
   - component: {fileID: 1572916745}
   - component: {fileID: 1572916744}
   m_Layer: 5
-  m_Name: NoAmmo_Text
+  m_Name: Ammo_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

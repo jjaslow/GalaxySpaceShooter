@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
         RestartText.SetActive(false);
         noAmmoTextCopy = noAmmoText.GetComponent<Text>();
         noAmmoTextCopy.color = Color.white;
-        noAmmoTextCopy.text = "Ammo Left: 15 / 15";
+        noAmmoTextCopy.text = "Ammo Left: 25 / 25";
     }
 
 
@@ -63,7 +63,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            noAmmoTextCopy.text = "Ammo Left: " + ammoCount + " / 15";
+            noAmmoTextCopy.text = "Ammo Left: " + ammoCount + " / 25";
             noAmmoTextCopy.color = Color.white;
         }
             

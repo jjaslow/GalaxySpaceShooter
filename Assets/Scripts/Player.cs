@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         _fireRight.SetActive(false);
         _fireMiddle.SetActive(false);
         shieldsImage.SetActive(false);
-        _ammoCount = 16;   //16
+        _ammoCount = 26;   //16
         mainCamera = Camera.main;
         _uiManager.ThrustBar(_thrustPower);
     }
@@ -267,7 +267,7 @@ public class Player : MonoBehaviour
 
     public void ReloadPowerUp()
     {
-        _ammoCount = 15;
+        _ammoCount = 25;
         _uiManager.AmmoCountDisplay(_ammoCount, _autoFireOn);
 
     }
