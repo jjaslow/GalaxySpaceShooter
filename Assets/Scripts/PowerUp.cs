@@ -54,6 +54,9 @@ public class PowerUp : MonoBehaviour
                 case 5:
                     collision.gameObject.GetComponent<Player>().AddLifePowerUp();
                     break;
+                case 6:
+                    collision.gameObject.GetComponent<Player>().BadPowerUp();
+                    break;
             }
 
             Destroy(gameObject);

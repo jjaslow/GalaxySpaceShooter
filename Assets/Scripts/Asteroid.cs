@@ -7,6 +7,7 @@ public class Asteroid : MonoBehaviour
     [SerializeField]
     private GameObject _ExplosionPrefab;
     private SpawnManager _SpawnManager;
+    private UIManager _uiManager;
 
     private AudioSource _audioSource;
 
@@ -15,6 +16,8 @@ public class Asteroid : MonoBehaviour
         _SpawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _SpawnManager.enabled =false;
         _audioSource = GetComponent<AudioSource>();
+        _uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
+        _uiManager.noAmmoText.SetActive(false);
     }
 
     // Update is called once per frame
@@ -47,6 +50,7 @@ public class Asteroid : MonoBehaviour
     {
         yield return new WaitForSeconds(0.15f);
         GetComponent<Renderer>().enabled = false;
+        _uiManager.noAmmoText.SetActive(true);
         Destroy(gameObject, 3f);
     }
 

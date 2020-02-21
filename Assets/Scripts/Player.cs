@@ -158,9 +158,7 @@ public class Player : MonoBehaviour
         if (!_autoFireOn)
             _ammoCount--;
 
-        if(_ammoCount==0 && !_autoFireOn)
-            _uiManager.AmmoText(true);
-
+        _uiManager.AmmoCountDisplay(_ammoCount, _autoFireOn);
         nextFire = Time.time + fireRate;
 
     }
@@ -270,7 +268,7 @@ public class Player : MonoBehaviour
     public void ReloadPowerUp()
     {
         _ammoCount = 15;
-        _uiManager.AmmoText(false);
+        _uiManager.AmmoCountDisplay(_ammoCount, _autoFireOn);
 
     }
 
@@ -292,7 +290,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         _autoFireOn = false;
-
+        _uiManager.AmmoCountDisplay(_ammoCount, _autoFireOn);
     }
 
 
@@ -316,6 +314,13 @@ public class Player : MonoBehaviour
             FireDamage();
         }
         
+    }
+
+    public void BadPowerUp()
+    {
+        transform.position = new Vector3(Random.Range(9.1f, 9.1f), Random.Range(-3f, 5.5f), 0);
+        _ammoCount = 0;
+        _uiManager.AmmoCountDisplay(_ammoCount, _autoFireOn);
     }
 
     public void AddScore(int value)

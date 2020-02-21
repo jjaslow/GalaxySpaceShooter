@@ -9,7 +9,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text scoreText;
     [SerializeField]
-    private GameObject noAmmoText;
+    public GameObject noAmmoText;
+    private Text noAmmoTextCopy;
     [SerializeField]
     private GameObject GameOverText;
     [SerializeField]
@@ -31,14 +32,41 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = "Score: 0";
         GameOverText.SetActive(false);
-        noAmmoText.SetActive(false);
+        //noAmmoText.SetActive(false);
         RestartText.SetActive(false);
+        noAmmoTextCopy = noAmmoText.GetComponent<Text>();
+        noAmmoTextCopy.color = Color.white;
+        noAmmoTextCopy.text = "Ammo Left: 15 / 15";
     }
 
 
     public void UpdateScore(int score)
     {
         scoreText.text = "Score: " + score;
+    }
+
+    public void AmmoCountDisplay(int ammoCount, bool autoFireOn)
+    {
+        //_noAmmo = false;
+
+        if (autoFireOn)
+        {
+            noAmmoTextCopy.color = Color.green;
+            noAmmoTextCopy.text = "Unlimited Autofire!";
+        }
+        else if(ammoCount == 0)
+        {
+            //_noAmmo = true;
+            noAmmoTextCopy.color = Color.red;
+            noAmmoTextCopy.text = "OUT OF AMMO!";
+            //StartCoroutine(FlickerNoAmmoText());
+        }
+        else
+        {
+            noAmmoTextCopy.text = "Ammo Left: " + ammoCount + " / 15";
+            noAmmoTextCopy.color = Color.white;
+        }
+            
     }
 
     public void AmmoText(bool outOfAmmo)
@@ -57,7 +85,7 @@ public class UIManager : MonoBehaviour
             noAmmoText.SetActive(false);
         }
             
-    }
+    } //depreciated
 
     public void UpdateLivesImage(int lives)
     {

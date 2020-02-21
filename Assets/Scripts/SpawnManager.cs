@@ -11,6 +11,10 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject[] PowerUpPrefabs;
+    [SerializeField]
+    private GameObject ReloadAmmoPrefab;
+    [SerializeField]
+    float _waveSystemFactor = 0;
 
 
     // Start is called before the first frame update
@@ -18,12 +22,13 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemies());
         StartCoroutine(SpawnPowerUps());
-
+        StartCoroutine(SpawnReloadAmmo());
     }
 
 
     IEnumerator SpawnEnemies()
     {
+        _waveSystemFactor = 1f;
         yield return new WaitForSeconds(3f);
         while (true)
         {
@@ -54,13 +59,15 @@ public class SpawnManager : MonoBehaviour
 
             Enemy e = Instantiate(EnemyPrefab, EnemyPosition, EnemyRotation, EnemySpawnParent).GetComponent<Enemy>();
             e.Init(_enemyCanShoot);
-            yield return new WaitForSeconds(Random.Range(.5f, 1.5f));
+
+            _waveSystemFactor += Time.deltaTime;
+            yield return new WaitForSeconds(Random.Range(.5f, 1.5f)/_waveSystemFactor);
         }
     }
 
     IEnumerator SpawnPowerUps()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(10f);
         while(true)
         {
             yield return new WaitForSeconds(Random.Range(7, 15));
@@ -72,6 +79,23 @@ public class SpawnManager : MonoBehaviour
 
         }
         
+    }
+
+
+    IEnumerator SpawnReloadAmmo()
+    {
+        yield return new WaitForSeconds(5f);
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(10, 15));
+
+            Vector3 PowerUpPosition = new Vector3(Random.Range(-9f, 9f), 7.25f, 0);
+
+            Instantiate(ReloadAmmoPrefab, PowerUpPosition, Quaternion.identity);
+
+
+        }
+
     }
 
 

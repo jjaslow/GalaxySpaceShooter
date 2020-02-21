@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1301935698194907284}
   - component: {fileID: 8934577951128179365}
   m_Layer: 0
-  m_Name: ReLoad_Powerup
+  m_Name: Bad_Powerup
   m_TagString: powerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 1992241597
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 15e7f3549a60b834ea2aaed7dc381704, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6185385082ffa344094ee8c13731ddda, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
-  powerupID: 4
+  powerupID: 6
 --- !u!50 &1347348828593682486
 Rigidbody2D:
   serializedVersion: 4

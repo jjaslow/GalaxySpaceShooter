@@ -577,7 +577,7 @@ GameObject:
   - component: {fileID: 850186854}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1103,8 +1103,11 @@ MonoBehaviour:
   - {fileID: 3127465117162463667, guid: 9834c1b3d01b160468c75d0c0663773c, type: 3}
   - {fileID: 6144777964367849054, guid: 40d332c406d100540a6f8a28e7292d60, type: 3}
   - {fileID: 3367386643546755610, guid: ea1b600629909264f982c6a3a5c674ad, type: 3}
-  - {fileID: 3367386643546755610, guid: 814637120c59f004ca7ea08b4127e59e, type: 3}
   - {fileID: 3367386643546755610, guid: ae801186e645bec43be83324082c1f2e, type: 3}
+  - {fileID: 3367386643546755610, guid: a005674938ee5db499806164e9c17432, type: 3}
+  ReloadAmmoPrefab: {fileID: 3367386643546755610, guid: 814637120c59f004ca7ea08b4127e59e,
+    type: 3}
+  _waveSystemFactor: 0
 --- !u!4 &1075642208
 Transform:
   m_ObjectHideFlags: 0
@@ -1868,7 +1871,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1572916743
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1919,7 +1922,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: OUT OF AMMO
+  m_Text: 'Ammo Left: 15 / 15'
 --- !u!222 &1572916745
 CanvasRenderer:
   m_ObjectHideFlags: 0
