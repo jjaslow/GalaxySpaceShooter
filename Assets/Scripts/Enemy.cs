@@ -14,7 +14,9 @@ public class Enemy : MonoBehaviour
 
     private AudioSource _audioSource;
     bool _isAlive;
+    bool _enemyCanShoot = true;
     Coroutine _coRoutine;
+
 
     private void Start()
     {
@@ -28,13 +30,17 @@ public class Enemy : MonoBehaviour
             
     }
 
+    public void Init(bool enemyCanShoot)
+    {
+        _enemyCanShoot = enemyCanShoot;
+    }
 
     // Update is called once per frame
     void Update()
     {
         transform.Translate(0, -1 * _speed * Time.deltaTime, 0);
 
-        if (transform.position.y < -5.5)
+        if (transform.position.y < -5.5 || Mathf.Abs(transform.position.y)>12)
         {
             //commented code returns enemy to top instead of destroying.
             //float xPos = Random.Range(-9f, 9f);
@@ -49,7 +55,9 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Shoot()
     {
-        while(true && _isAlive)
+        yield return new WaitForSeconds(Random.Range(1, 2));
+
+        while (true && _isAlive && _enemyCanShoot)
         {
             Instantiate(laserPrefab, transform.position + (.95f * Vector3.down), Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(1, 2));
@@ -71,7 +79,7 @@ public class Enemy : MonoBehaviour
                 StopCoroutine(_coRoutine);
             _audioSource.Play();
             Destroy(other.gameObject);
-            GameObject explosion = Instantiate(_ExplodingEnemyPrefab, transform.position, Quaternion.identity);
+            GameObject explosion = Instantiate(_ExplodingEnemyPrefab, transform.position, transform.rotation);
             Destroy(explosion, 2.5f);
             Player.AddScore(10);
             StartCoroutine(DestroyEnemy());
@@ -82,7 +90,7 @@ public class Enemy : MonoBehaviour
             if (_coRoutine != null)
                 StopCoroutine(_coRoutine);
             other.GetComponent<Player>().Damage();
-            GameObject explosion = Instantiate(_ExplodingEnemyPrefab, transform.position, Quaternion.identity);
+            GameObject explosion = Instantiate(_ExplodingEnemyPrefab, transform.position, transform.rotation);
             Destroy(explosion, 2.5f);
             StartCoroutine(DestroyEnemy());
         }

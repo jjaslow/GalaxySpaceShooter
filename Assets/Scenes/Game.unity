@@ -262,7 +262,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &57133286 stripped
 GameObject:
@@ -660,7 +660,7 @@ RectTransform:
   - {fileID: 1572916743}
   - {fileID: 1000156093}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1559,7 +1559,7 @@ MonoBehaviour:
   _shieldStrength: 0
   _lives: 3
   _score: 0
-  _ammoCount: 160000
+  _ammoCount: 16
   _thrustPower: 5
   _thrustActive: 0
   _canStartThrust: 1
@@ -2161,7 +2161,7 @@ PrefabInstance:
     - target: {fileID: 4941283666272426137, guid: cf4c095ed7a2ded4d84af967c4befc4e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4941283666272426137, guid: cf4c095ed7a2ded4d84af967c4befc4e,
         type: 3}
