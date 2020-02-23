@@ -39,9 +39,8 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 EnemyPosition;
             Quaternion EnemyRotation = Quaternion.identity;
-            bool _enemyCanShoot = true;
+            bool _enemyTravelTop2Bottom = true;
             int _enemyMovement = Random.Range(0, 10);
-            Debug.Log(_enemyMovement);
 
             if (_enemyMovement < 2 ) //2  adjust position and direction for 20%;   if 20% then dont shoot
             {
@@ -54,7 +53,7 @@ public class SpawnManager : MonoBehaviour
                 float angle = (Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg)-90;
                 EnemyRotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-                _enemyCanShoot = false;
+                _enemyTravelTop2Bottom = false;
             }
             else  //start at top and go straight down as normal
             {
@@ -63,7 +62,7 @@ public class SpawnManager : MonoBehaviour
             }
 
             Enemy e = Instantiate(EnemyPrefab, EnemyPosition, EnemyRotation, EnemySpawnParent).GetComponent<Enemy>();
-            e.Init(_enemyCanShoot);
+            e.Init(_enemyTravelTop2Bottom);
 
             _waveSystemFactor += Time.deltaTime;
             yield return new WaitForSeconds(Random.Range(1.5f, 2.5f)/_waveSystemFactor);
@@ -121,7 +120,7 @@ public class SpawnManager : MonoBehaviour
                     xPos = 11;
 
                 Vector3 Position = new Vector3(xPos, Random.Range(-4, 6), 0);
-                Instantiate(HomingEnemyPrefab, Position, Quaternion.identity);
+                Instantiate(HomingEnemyPrefab, Position, Quaternion.identity, EnemySpawnParent);
             }
             
             yield return new WaitForSeconds(Random.Range(25, 35));

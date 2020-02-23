@@ -13,13 +13,11 @@ public class HomingEnemy : MonoBehaviour
     private AudioSource _audioSource;
     bool _isAlive;
 
-
     private void Start()
     {
         _isAlive = true;
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
-
     }
 
     // Update is called once per frame
@@ -30,14 +28,8 @@ public class HomingEnemy : MonoBehaviour
         float angle = (Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg);
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-
         transform.Translate(-1 * _speed * Time.deltaTime, 0, 0);
-
     }
-
-
-
-
 
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -69,12 +61,11 @@ public class HomingEnemy : MonoBehaviour
         GetComponent<CapsuleCollider2D>().enabled = false;
         yield return new WaitForSeconds(0.15f);
         GetComponent<Renderer>().enabled = false;
+        GameObject reset = GameObject.FindGameObjectWithTag("SpawnManager");
+        GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>().HomingEnemyExists = false;
+
         Destroy(gameObject, 3f);
     }
 
-    private void OnDestroy()
-    {
-        GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnManager>().HomingEnemyExists = false;
-    }
 
 }

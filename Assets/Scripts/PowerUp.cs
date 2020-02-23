@@ -14,15 +14,22 @@ public class PowerUp : MonoBehaviour
     //2 shield
     //3 auto fire
 
+    private Player Player;
 
+    private void Start()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+    }
 
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKey(KeyCode.C))
+            transform.position = Vector3.MoveTowards(transform.position, Player.transform.position, Time.deltaTime * 5);
+        else
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
-        if (transform.position.y < -4)
+        if (transform.position.y < -6)
             Destroy(gameObject);
 
 

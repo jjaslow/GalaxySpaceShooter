@@ -14,6 +14,8 @@ public class Laser : MonoBehaviour
             transform.Translate(Vector3.up * speed * Time.deltaTime);
         else if(gameObject.tag == "laserEnemy")
             transform.Translate(Vector3.down * speed * Time.deltaTime);
+        else if (gameObject.tag == "laserEnemyUp")
+            transform.Translate(Vector3.up * speed * Time.deltaTime);
 
         if (transform.parent != null)
             Destroy(gameObject.transform.parent.gameObject, 2.5f);
