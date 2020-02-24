@@ -108,12 +108,14 @@ public class UIManager : MonoBehaviour
             thrustBar.color = new Color(0, 1, 44 / 255);
     }
 
-    public void GameOver()
+    public void GameOver(bool _didIWin)
     {
         noAmmoText.SetActive(false);
         _noAmmo = false;
         StopCoroutine(FlickerNoAmmoText());
 
+        if (_didIWin)
+            GameOverText.GetComponent<Text>().text = "YOU WIN!!!";
         GameOverText.SetActive(true);
         RestartText.SetActive(true);
         StartCoroutine(FlickerGameOverText());

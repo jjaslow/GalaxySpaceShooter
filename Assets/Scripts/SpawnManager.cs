@@ -44,7 +44,7 @@ public class SpawnManager : MonoBehaviour
 
     private void Update()
     {
-        if (_nextWaveTime < 0)
+        if (_nextWaveTime < 0 && _waveSystemFactor<=4)
         {
             _nextWaveTime = _timeTillNextWave;
             WaveText(++_waveSystemFactor);

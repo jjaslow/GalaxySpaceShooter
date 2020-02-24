@@ -218,8 +218,8 @@ public class Player : MonoBehaviour
             foreach (GameObject pu in powerUps)
                 Destroy(pu);
 
-            _uiManager.GameOver();
-            GameObject.FindGameObjectWithTag("gameManager").GetComponent<GameManager>().GameOver();
+            _uiManager.GameOver(false);
+            GameObject.FindGameObjectWithTag("gameManager").GetComponent<GameManager>().GameOver(false);
         }
             
     }

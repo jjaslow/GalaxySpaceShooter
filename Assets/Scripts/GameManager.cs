@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
             Application.Quit();
     }
 
-    public void GameOver()
+    public void GameOver(bool _didIWin)
     {
         _isGameOver = true;
     }

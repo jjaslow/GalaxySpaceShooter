@@ -139,6 +139,15 @@ public class EnemyBoss : MonoBehaviour
         Destroy(finalExplosion, 2.5f);
         Destroy(gameObject, .5f);
         Debug.Log("you win!!!!!");
+        GameObject.Find("Spawn_Manager").SetActive(false);
+        Destroy(GameObject.Find("EnemyParent"));
+
+        GameObject[] powerUps = GameObject.FindGameObjectsWithTag("powerUp");
+        foreach (GameObject pu in powerUps)
+            Destroy(pu);
+
+        GameObject.FindGameObjectWithTag("gameManager").GetComponent<GameManager>().GameOver(true);
+        GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>().GameOver(true);
     }
 
 }
