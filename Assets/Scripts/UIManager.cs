@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     private GameObject GameOverText;
     [SerializeField]
     private GameObject RestartText;
+    [SerializeField]
+    private GameObject WaveText;
 
     [SerializeField]
     private Image _livesImage;
@@ -116,6 +118,23 @@ public class UIManager : MonoBehaviour
         RestartText.SetActive(true);
         StartCoroutine(FlickerGameOverText());
     }
+
+    public void SetWaveText(int wave)
+    {
+        if(wave==-1)
+            WaveText.GetComponent<Text>().text = "Boss Wave Starting...";
+        else
+            WaveText.GetComponent<Text>().text = "Wave " + wave + " Starting...";
+
+        StartCoroutine(ClearWaveText());
+    }
+
+    IEnumerator ClearWaveText()
+    {
+        yield return new WaitForSeconds(2);
+        WaveText.GetComponent<Text>().text = "";
+    }
+
 
     IEnumerator FlickerGameOverText()
     {

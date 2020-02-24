@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -10,31 +11,67 @@ public class SpawnManager : MonoBehaviour
     private GameObject HomingEnemyPrefab;
     [SerializeField]
     private Transform EnemySpawnParent;
+    [SerializeField]
+    private GameObject BossEnemy;
+    public bool HomingEnemyExists = false;
 
     [SerializeField]
     private GameObject[] PowerUpPrefabs;
     [SerializeField]
     private GameObject ReloadAmmoPrefab;
+
+
     [SerializeField]
-    float _waveSystemFactor = 0;
+    int _waveSystemFactor = 0;
+    float _nextWaveTime = 0;
+    private float _timeTillNextWave = 30f;
+    Coroutine enemySpawnCoroutine;
+    Coroutine enemyHomingSpawnCoroutine;
 
-    public bool HomingEnemyExists = false;
-
+    private UIManager _uiManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(SpawnEnemies());
-        StartCoroutine(SpawnHomingEnemies());
+        _uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
+        WaveText(++_waveSystemFactor);
+        _nextWaveTime = _timeTillNextWave;
+        enemySpawnCoroutine = StartCoroutine(SpawnEnemies());
+        enemyHomingSpawnCoroutine = StartCoroutine(SpawnHomingEnemies());
         StartCoroutine(SpawnPowerUps());
         StartCoroutine(SpawnReloadAmmo());
+    }
+
+    private void Update()
+    {
+        if (_nextWaveTime < 0)
+        {
+            _nextWaveTime = _timeTillNextWave;
+            WaveText(++_waveSystemFactor);
+        }
+        _nextWaveTime -= Time.deltaTime;
+    }
+
+    private void WaveText(int x)
+    {
+        //Debug.Log("Wave " + x);
+        if(x==4) //boss wave
+        {
+            x = -1;
+            StopCoroutine(enemySpawnCoroutine);
+            StopCoroutine(enemyHomingSpawnCoroutine);
+            SpawnBossEnemy();
+            foreach (Transform eachChild in EnemySpawnParent.transform)
+                Destroy(eachChild.gameObject);
+        }
+        _uiManager.SetWaveText(x);
     }
 
 
     IEnumerator SpawnEnemies()
     {
-        _waveSystemFactor = 1f;
         yield return new WaitForSeconds(3f);
+        
         while (true)
         {
             Vector3 EnemyPosition;
@@ -62,9 +99,8 @@ public class SpawnManager : MonoBehaviour
             }
 
             Enemy e = Instantiate(EnemyPrefab, EnemyPosition, EnemyRotation, EnemySpawnParent).GetComponent<Enemy>();
-            e.Init(_enemyTravelTop2Bottom);
+            e.PowerUp(_enemyTravelTop2Bottom);
 
-            _waveSystemFactor += Time.deltaTime;
             yield return new WaitForSeconds(Random.Range(1.5f, 2.5f)/_waveSystemFactor);
         }
     }
@@ -129,5 +165,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    void SpawnBossEnemy()
+    {
+        BossEnemy.SetActive(true);
+    }
 
 }

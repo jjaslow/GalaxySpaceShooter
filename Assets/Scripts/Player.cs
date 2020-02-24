@@ -265,18 +265,18 @@ public class Player : MonoBehaviour
         StartCoroutine(AutoFirePowerDown());
     }
 
-    public void ReloadPowerUp()
+    IEnumerator AutoFirePowerDown()
     {
-        _ammoCount = 25;
+        yield return new WaitForSeconds(5f);
+        _autoFireOn = false;
         _uiManager.AmmoCountDisplay(_ammoCount, _autoFireOn);
-
     }
 
     IEnumerator AutoFireToggle()
     {
         float counter = Time.time + 5f;
 
-        while(Time.time < counter)
+        while (Time.time < counter)
         {
             _autoFireOn = true;
             yield return new WaitForSeconds(.05f);
@@ -286,13 +286,12 @@ public class Player : MonoBehaviour
 
     }
 
-    IEnumerator AutoFirePowerDown()
+    public void ReloadPowerUp()
     {
-        yield return new WaitForSeconds(5f);
-        _autoFireOn = false;
+        _ammoCount = 25;
         _uiManager.AmmoCountDisplay(_ammoCount, _autoFireOn);
-    }
 
+    }
 
     public void ShieldPowerUp()
     {
@@ -370,14 +369,11 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
         if (other.gameObject.tag == "laserEnemy" || other.gameObject.tag == "laserEnemyUp")
         {
             Destroy(other.gameObject);
             Damage();
-
         }
-
     }
 
 

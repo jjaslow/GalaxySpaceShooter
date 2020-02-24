@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
         shieldsImage = transform.GetChild(0).gameObject;
     }
 
-    public void Init(bool _enemyTravelTop2Bottom)
+    public void PowerUp(bool _enemyTravelTop2Bottom)
     {
         _enemyCanShoot = _enemyTravelTop2Bottom;
 
@@ -42,32 +42,33 @@ public class Enemy : MonoBehaviour
             if (_specialPowerEnemy == 0) //1 of 10 will shoot
             {
                 _shootCoRoutine = StartCoroutine(Shoot(false));
-                Debug.Log("SPECIAL POWER: Shoot");
+                //Debug.Log("SPECIAL POWER: Shoot");
             }
             else if (_specialPowerEnemy == 1) //1 of 10 can shoot backwards
             {
                 _shootCoRoutine = StartCoroutine(Shoot(true));
-                Debug.Log("SPECIAL POWER: Shoot back");
+                //Debug.Log("SPECIAL POWER: Shoot back");
             }
             else if (_specialPowerEnemy == 2) //1 of 10 will have shields
             {
                 _shieldsUp = true;
                 shieldsImage.SetActive(true);
-                Debug.Log("SPECIAL POWER: shield");
+                //Debug.Log("SPECIAL POWER: shield");
             }
             else if (_specialPowerEnemy == 3) //1 of 10 will be aggressive
             {
                 _isAggressive = true;
                 transform.GetChild(1).gameObject.SetActive(true);
-                Debug.Log("SPECIAL POWER: aggressive");
+                //Debug.Log("SPECIAL POWER: aggressive");
             }
             else if (_specialPowerEnemy == 4) //1 of 10 can dodge laser
             {
                 transform.GetChild(2).gameObject.SetActive(true);
-                Debug.Log("SPECIAL POWER: dodge");
+                transform.GetChild(3).gameObject.SetActive(true);
+                //Debug.Log("SPECIAL POWER: dodge");
             }
-            else
-                Debug.Log("SPECIAL POWER: NONE");
+            //else
+            //    Debug.Log("SPECIAL POWER: NONE");
         }
     }
 
@@ -151,6 +152,7 @@ public class Enemy : MonoBehaviour
     {
         _isAlive = false;
         transform.GetChild(1).gameObject.SetActive(false);
+        transform.GetChild(3).gameObject.SetActive(false);
         if (_shootCoRoutine != null)
             StopCoroutine(_shootCoRoutine);
         GameObject explosion = Instantiate(_ExplodingEnemyPrefab, transform.position, transform.rotation);
