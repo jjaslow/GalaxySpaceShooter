@@ -116,7 +116,8 @@ public class EnemyBoss : MonoBehaviour
         {
             _audioSource.Play();
             Vector2 _pos = new Vector2(_player.transform.position.x, _player.transform.position.y);
-            Instantiate(explosion, other.ClosestPoint(_pos), Quaternion.identity);
+            GameObject exp = Instantiate(explosion, other.ClosestPoint(_pos), Quaternion.identity);
+            Destroy(exp, 3f);
             _lives--;
             if (_lives < 1 && _isAlive)
                 DestroyEnemy();
@@ -135,7 +136,7 @@ public class EnemyBoss : MonoBehaviour
     {
         _isAlive = false;
         GameObject finalExplosion = Instantiate(explosion, transform.position, transform.rotation);
-        finalExplosion.transform.localScale = new Vector3(2, 2, 2);
+        finalExplosion.transform.localScale = new Vector3(3, 3, 3);
         Destroy(finalExplosion, 2.5f);
         Destroy(gameObject, .5f);
         Debug.Log("you win!!!!!");
